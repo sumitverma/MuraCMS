@@ -205,8 +205,10 @@ CKEDITOR.editorConfig = function( config )
 	config.oembed_WrapperClass = 'embeddedContent';
 
 <cfoutput>
-	<cfset secure=$.getBean('utility').isHTTPS()>
-
+	<cfset clientHeaders = GetHttpRequestData().headers />
+	<cfset isHTTPS = structKeyExists(clientHeaders,"X-Forwarded-Proto") AND clientHeaders["X-Forwarded-Proto"] EQ "https" />
+	<cfset secure=$.getBean('utility').isHTTPS() OR isHTTPS />
+	
 	<!--- contentsCss --->
 		config.contentsCss = [];
 
